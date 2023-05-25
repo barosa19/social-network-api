@@ -1,8 +1,16 @@
-const express = require('express')
-const app = express()
-const port = 3001
+const db = require("./config/connection");
+const routes = require("./routes");
+const express = require("express");
 
-app.use(express.urlencoded())
-app.use(express.json())
+const app = express();
+const port = 3001;
 
-app.listen(port)
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(routes);
+
+db.once("open", () => {
+  app.listen(port, () => {
+    console.log("Connected!");
+  });
+});
