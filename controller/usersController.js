@@ -10,6 +10,13 @@ async function allUsers(req,res){
     } catch(err){res.status(500).json(err)}
 }
 
+async function oneUser(req,res){
+    try {
+        const userData = await User.findById(req.params._id)
+        res.status(200).json(userData)
+    } catch(err){res.status(500).json(err)}
+}
+
 async function newUser(req,res){
     try {
         const newUser = await User.create(req.body)
@@ -18,4 +25,4 @@ async function newUser(req,res){
 }
 
 
-module.exports = {routeWorks, allUsers, newUser}
+module.exports = {routeWorks, allUsers, oneUser, newUser}

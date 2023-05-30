@@ -11,6 +11,15 @@ async function allThoughts(req, res) {
   }
 }
 
+async function oneThought(req, res) {
+    try {
+      const thoughtData = await Thought.findById(req.params._id);
+      res.status(200).json(thoughtData);
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  }
+
 async function newThought(req, res) {
   try {
     const newThought = await Thought.create(req.body);
@@ -24,4 +33,4 @@ async function newThought(req, res) {
     res.status(500).json(err);
   }
 }
-module.exports = { routerWorks, allThoughts, newThought };
+module.exports = { routerWorks, allThoughts, oneThought, newThought };
