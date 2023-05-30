@@ -70,6 +70,19 @@ async function newFriend(req, res) {
   }
 }
 
+async function deleteFriend(req, res) {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
+      { new: true }
+    );
+    res.status(200).json({ updatedUser });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
 module.exports = {
   routeWorks,
   allUsers,
@@ -78,4 +91,5 @@ module.exports = {
   updateUser,
   deleteUser,
   newFriend,
+  deleteFriend
 };
