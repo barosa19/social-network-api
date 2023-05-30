@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-//TODO: getter function and understanding virtuals
+//! getter function and understanding virtuals
 const userSchema = new Schema(
   {
     username: { type: String, unique: true, required: true, trim: true },
@@ -17,6 +17,10 @@ const userSchema = new Schema(
     id: false
   }
 );
+
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length
+})
 
 const User = model("user", userSchema);
 

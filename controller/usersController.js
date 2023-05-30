@@ -1,9 +1,5 @@
 const { User, Thought } = require("../models/index");
 
-function routeWorks(req, res) {
-  res.json({ message: "It works" });
-}
-
 async function allUsers(req, res) {
   try {
     const userData = await User.find();
@@ -84,7 +80,6 @@ async function deleteFriend(req, res) {
 }
 
 module.exports = {
-  routeWorks,
   allUsers,
   oneUser,
   newUser,

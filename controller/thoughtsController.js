@@ -10,10 +10,10 @@ async function allThoughts(req, res) {
     res.status(500).json(err);
   }
 }
-
+//! Am I okay to do findById instead of findOne?
 async function oneThought(req, res) {
   try {
-    const thoughtData = await Thought.findById(req.params._id);
+    const thoughtData = await Thought.findById(req.params._id).populate('reactions');
     res.status(200).json(thoughtData);
   } catch (err) {
     res.status(500).json(err);
@@ -23,7 +23,7 @@ async function oneThought(req, res) {
 async function newThought(req, res) {
   try {
     const newThought = await Thought.create(req.body);
-    await User.findOneAndUpdate(
+    const updatedUser = await User.findOneAndUpdate(
       { _id: req.body.userId },
       { $addToSet: { thoughts: newThought._id } },
       { new: true }
@@ -46,7 +46,7 @@ async function updateThought(req, res) {
     res.status(500).json(err);
   }
 }
-//!it wont remove it from the array of Thoughts in User
+
 async function deleteThought(req, res) {
   try {
     const thoughtData = await Thought.findById(req.params._id);
@@ -63,6 +63,27 @@ async function deleteThought(req, res) {
     res.status(500).json(err);
   }
 }
+//! It is still creating an _id
+async function newReaction(req, res) {
+  try {
+    const thoughtData = await Thought.findById(req.params.thoughtId)
+    thoughtData.reactions.push(req.body)
+    res.status(200).json({ thoughtData });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+//! How am i suppose to deleteReaction? With an id?
+async function deleteReaction(req, res) {
+  try {
+    const thoughtData = await Thought.findById(req.params.thoughtId)
+    thoughtData.reactions.push(req.body)
+    res.status(200).json({ });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
 module.exports = {
   routerWorks,
   allThoughts,
@@ -70,4 +91,6 @@ module.exports = {
   newThought,
   updateThought,
   deleteThought,
+  newReaction,
+  deleteReaction
 };
