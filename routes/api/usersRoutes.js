@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const {routeWorks} = require('../../controller/usersController')
+const {routeWorks, allUsers, newUser} = require('../../controller/usersController')
 
-router.route('/').get(routeWorks).post(routeWorks)
+router.route('/').get(allUsers).post(newUser)
 
 router.route('/:_id').get(routeWorks).put(routeWorks).delete(routeWorks)
 

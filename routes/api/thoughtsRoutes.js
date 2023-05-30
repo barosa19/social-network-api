@@ -1,7 +1,7 @@
 const router = require('express').Router()
-const {routerWorks} = require('../../controller/thoughtsController')
+const {routerWorks, allThoughts, newThought} = require('../../controller/thoughtsController')
 
-router.route('/').get(routerWorks).post(routerWorks)
+router.route('/').get(allThoughts).post(newThought)
 
 router.route('/:_id').get(routerWorks).put(routerWorks).delete(routerWorks)
 
