@@ -11,7 +11,7 @@ async function allUsers(req, res) {
 
 async function oneUser(req, res) {
   try {
-    const userData = await User.findById(req.params._id);
+    const userData = await User.findById(req.params._id).populate("thoughts");
     res.status(200).json(userData);
   } catch (err) {
     res.status(500).json(err);

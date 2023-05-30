@@ -10,10 +10,10 @@ async function allThoughts(req, res) {
     res.status(500).json(err);
   }
 }
-//! Am I okay to do findById instead of findOne?
+
 async function oneThought(req, res) {
   try {
-    const thoughtData = await Thought.findById(req.params._id).populate('reactions');
+    const thoughtData = await Thought.findById(req.params._id);
     res.status(200).json(thoughtData);
   } catch (err) {
     res.status(500).json(err);
@@ -55,7 +55,7 @@ async function deleteThought(req, res) {
       { username: thoughtData.username },
       { $pull: { thoughts: req.params._id } },
       { new: true }
-    );
+    )
     res
       .status(200)
       .json({ message: "Thought successfully DELETED", updatedUser });
@@ -63,11 +63,15 @@ async function deleteThought(req, res) {
     res.status(500).json(err);
   }
 }
-//! It is still creating an _id
+
 async function newReaction(req, res) {
   try {
-    const thoughtData = await Thought.findById(req.params.thoughtId)
-    thoughtData.reactions.push(req.body)
+    const thoughtData = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      {$addToSet: {reactions: req.body}},
+      {new: true},
+      )
+    
     res.status(200).json({ thoughtData });
   } catch (err) {
     res.status(500).json(err);
