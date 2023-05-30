@@ -12,13 +12,13 @@ async function allThoughts(req, res) {
 }
 
 async function oneThought(req, res) {
-    try {
-      const thoughtData = await Thought.findById(req.params._id);
-      res.status(200).json(thoughtData);
-    } catch (err) {
-      res.status(500).json(err);
-    }
+  try {
+    const thoughtData = await Thought.findById(req.params._id);
+    res.status(200).json(thoughtData);
+  } catch (err) {
+    res.status(500).json(err);
   }
+}
 
 async function newThought(req, res) {
   try {
@@ -33,4 +33,41 @@ async function newThought(req, res) {
     res.status(500).json(err);
   }
 }
-module.exports = { routerWorks, allThoughts, oneThought, newThought };
+
+async function updateThought(req, res) {
+  try {
+    const thoughtData = await Thought.findByIdAndUpdate(
+      req.params._id,
+      req.body,
+      { new: true }
+    );
+    res.status(200).json(thoughtData);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+
+async function deleteThought(req, res) {
+  try {
+    const thoughtData = await Thought.findById(req.params._id);
+    await Thought.findByIdAndRemove(req.params._id);
+    const updatedUser = await User.findOneAndUpdate(
+      { username: thoughtData.username },
+      { $pull: { thoughts: req.params._id } },
+      { new: true }
+    );
+    res
+      .status(200)
+      .json({ message: "Thought successfully DELETED", updatedUser });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+}
+module.exports = {
+  routerWorks,
+  allThoughts,
+  oneThought,
+  newThought,
+  updateThought,
+  deleteThought,
+};
