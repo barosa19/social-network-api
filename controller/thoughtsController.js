@@ -46,7 +46,7 @@ async function updateThought(req, res) {
     res.status(500).json(err);
   }
 }
-
+//!it wont remove it from the array of Thoughts in User
 async function deleteThought(req, res) {
   try {
     const thoughtData = await Thought.findById(req.params._id);
