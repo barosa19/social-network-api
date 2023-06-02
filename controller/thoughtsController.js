@@ -77,12 +77,15 @@ async function newReaction(req, res) {
     res.status(500).json(err);
   }
 }
-//! How am i suppose to deleteReaction? With an id?
+
 async function deleteReaction(req, res) {
   try {
-    const thoughtData = await Thought.findById(req.params.thoughtId)
-    thoughtData.reactions.push(req.body)
-    res.status(200).json({ });
+    const thoughtData = await Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      { $pull: { reactions: {reactionId: req.params.reactionId }} },
+      { new: true }
+      )
+    res.status(200).json({message: "Reaction successfully DELETED", thoughtData });
   } catch (err) {
     res.status(500).json(err);
   }
