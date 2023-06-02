@@ -1,5 +1,5 @@
 const { Schema, model } = require("mongoose");
-//! getter function and understanding virtuals
+
 const userSchema = new Schema(
   {
     username: { type: String, unique: true, required: true, trim: true },
